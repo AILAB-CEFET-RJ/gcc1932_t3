@@ -1,0 +1,11 @@
+joblib
+numpy
+pandas
+plotly
+pyarrow
+scikit-learn
+# streamlit
+# streamlit-shortcuts
+torch # if needed, install accordingly to your cuda version
+tqdm
+lightgbm
