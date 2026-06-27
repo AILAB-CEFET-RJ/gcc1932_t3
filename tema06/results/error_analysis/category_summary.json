@@ -1,0 +1,22 @@
+{
+  "baseline2": {
+    "falso_positivo": 264,
+    "falso_negativo/fora_do_lexico": 188,
+    "erro_classe": 119,
+    "erro_fronteira/composta_parcial": 110,
+    "erro_fronteira/span_maior": 109,
+    "falso_negativo/variacao_ortografica": 68,
+    "falso_negativo/no_lexico_nao_reconhecida": 42,
+    "erro_fronteira/deslocado": 3
+  },
+  "Proposta 2 (20k pseudo)": {
+    "falso_negativo/fora_do_lexico": 557,
+    "falso_positivo": 296,
+    "falso_negativo/variacao_ortografica": 219,
+    "erro_fronteira/composta_parcial": 217,
+    "erro_classe": 83,
+    "erro_fronteira/span_maior": 52,
+    "falso_negativo/no_lexico_nao_reconhecida": 33,
+    "erro_fronteira/deslocado": 2
+  }
+}
