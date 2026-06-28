@@ -1,0 +1,7 @@
+pandas
+numpy
+torch #Pela carga do treinamento é extremamente recomendável usar a versão cuda
+scipy
+scikit-learn
+matplotlib
+seaborn
