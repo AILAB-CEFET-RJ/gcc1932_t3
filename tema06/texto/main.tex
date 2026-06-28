@@ -33,7 +33,43 @@
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+  {\large\bfseries CEFET/RJ\par}
+  \vspace{0.2cm}
+  {\large Bacharelado em Ciência da Computação\par}
+  \vspace{0.2cm}
+  {\normalsize CIC1205 -- Machine Learning\par}
+
+  \vfill
+
+  {\Large\bfseries Trabalho 3 -- Tema 6\par}
+  \vspace{1.4cm}
+  {\LARGE\bfseries Pseudo-rotulagem fraca para reconhecimento de entidades\par}
+  \vspace{0.35cm}
+  {\LARGE\bfseries em relatos do Disque Denúncia\par}
+
+  \vfill
+
+  \begin{minipage}{0.82\textwidth}
+    \raggedright
+    \normalsize
+    \textbf{Alunos:} Jose Antonio Ferreira e Ricardo Araujo\\[0.5cm]
+    \textbf{Professor:} Eduardo Bezerra\\[0.5cm]
+    Relatório acadêmico apresentado na disciplina
+    \textbf{CIC1205 -- Machine Learning} como parte dos requisitos de
+    avaliação do Trabalho 3.
+  \end{minipage}
+
+  \vfill
+
+  {\large Rio de Janeiro\par}
+  \vspace{0.15cm}
+  {\large Junho de 2026\par}
+\end{center}
+\end{titlepage}
+
 \tableofcontents
 \newpage
 
@@ -46,17 +82,20 @@ em serviços de segurança pública, as dificuldades se multiplicam: a linguagem
 repleta de abreviações, apelidos, variações ortográficas e referências locais que
 raramente aparecem em corpora genéricos usados para treinar modelos padrão.
 
-O ponto de partida deste trabalho é a dissertação de mestrado de Gustavo Melo,
-que investigou o problema de REN em relatos informais do serviço Disque Denúncia
-do Rio de Janeiro. O objetivo central da dissertação foi identificar automaticamente
-entidades dos tipos Pessoa, Localização e Organização em textos brutos, sem
-estrutura predefinida. O corpus utilizado, chamado DDsmall, contém 5.230 relatos
-anotados manualmente.
+O ponto de partida deste trabalho é a dissertação de mestrado de Gustavo Melo
+\citep{melo2026ren}, que investigou o problema de REN em relatos informais do
+serviço Disque Denúncia do Rio de Janeiro. Nessa dissertação, o objetivo central
+foi identificar automaticamente entidades dos tipos Pessoa, Localização e
+Organização em relatos criminais escritos em linguagem coloquial, com erros
+ortográficos e estrutura textual livre. Além do texto dos relatos, a dissertação
+também considerou o uso de metadados estruturados como fonte adicional de
+contexto para o problema. O corpus anotado utilizado, chamado DDsmall, contém
+5.230 relatos anotados manualmente.
 Além desse corpus anotado, existe um corpus muito maior e sem anotações
 manuais de REN, denominado DDlarge, com 184.493 relatos criminais. Na
 dissertação, a estratégia principal para aproveitar o DDlarge foi a
-pseudo-rotulagem com modelos de linguagem de grande porte, em particular o
-GLiNER, que avalia o contexto ao redor de cada
+pseudo-rotulagem em uma abordagem de ajuste fino com modelos de linguagem,
+em particular o GLiNER, que avalia o contexto ao redor de cada
 candidato a entidade antes de atribuir um rótulo. Essa abordagem produz
 resultados expressivos, mas exige recursos computacionais consideráveis e
 tempo de treinamento elevado.
@@ -72,7 +111,8 @@ conhecidas.
 
 \section{Conjuntos de dados}
 
-O trabalho utilizou os mesmos corpora considerados na dissertação de Gustavo Melo:
+O trabalho utilizou os mesmos corpora considerados na dissertação de Gustavo Melo
+\citep{melo2026ren}:
 
 \begin{itemize}
   \item \textbf{DDsmall}: corpus manualmente anotado, com 5.230 relatos distribuídos
@@ -99,7 +139,7 @@ dado o volume de 184 mil registros.
 \section{Entidades consideradas}
 
 As três categorias de entidades seguem diretamente a definição adotada na
-dissertação de Gustavo Melo:
+dissertação de Gustavo Melo \citep{melo2026ren}:
 
 \begin{itemize}
   \item \textbf{Pessoa}: nomes próprios, apelidos, alcunhas ou qualquer referência
@@ -124,6 +164,13 @@ outras raras ou ambíguas.
 A abordagem proposta foi dividida em cinco etapas sequenciais: extração do léxico,
 filtragem, projeção lexical, construção do corpus pseudo-anotado e treinamento
 dos modelos.
+
+Do ponto de vista das ferramentas do spaCy, as Etapas 1 e 2 não utilizaram
+componentes da biblioteca: a extração, a normalização e a filtragem do léxico
+foram implementadas com estruturas de dados em Python sobre os spans já
+anotados do corpus. O spaCy passou a ser usado apenas a partir da projeção
+lexical, na tokenização, no casamento de padrões e, depois, no treinamento e
+na execução dos pipelines de reconhecimento de entidades.
 
 \subsection{Etapa 1: extração do léxico de entidades}
 
@@ -219,6 +266,12 @@ spaCy com o atributo \texttt{LOWER}, que realiza casamento insensível a
 maiúsculas e minúsculas com base em tokens. O uso de tokens, em vez de busca
 por substring bruta, garante o respeito a fronteiras de palavra.
 
+Na implementação, esse matcher foi construído sobre um pipeline mínimo para
+português criado com \texttt{spacy.blank('pt')}, usado apenas para fornecer
+tokenização e vocabulário ao \texttt{PhraseMatcher}. Assim, o spaCy não foi
+empregado aqui como modelo estatístico, mas como infraestrutura linguística
+leve para segmentação em tokens e casamento eficiente de expressões.
+
 Internamente, o PhraseMatcher utiliza uma estrutura de busca baseada em trie,
 adaptada do algoritmo FlashText \citep{singh2017flashtext}, para realizar a correspondência
 simultânea de grandes conjuntos de expressões. Essa abordagem permite localizar múltiplos
@@ -266,6 +319,15 @@ associando o texto original aos spans anotados. O treinamento foi executado com
 semente aleatória fixada em 42. Para a Proposta 2, os exemplos do DDsmall e os
 pseudo-exemplos do DDlarge foram combinados e embaralhados antes do treinamento.
 
+Em termos de submódulos, o treinamento utilizou principalmente
+\texttt{spacy.training.Example} para converter anotações em exemplos
+supervisionados, \texttt{nlp.add\_pipe('ner')} para adicionar o reconhecedor de
+entidades ao pipeline, \texttt{nlp.initialize(...)} para inicializar os pesos,
+\texttt{spacy.util.minibatch} para formar os lotes de treinamento e
+\texttt{nlp.evaluate(...)} para acompanhar o desempenho no conjunto de
+validação. Quando disponível, a execução foi configurada com
+\texttt{spacy.prefer\_gpu()} para permitir uso de GPU.
+
 \section{Modelos e configurações experimentais}
 
 Foram comparadas cinco configurações:
@@ -274,23 +336,33 @@ Foram comparadas cinco configurações:
   \item[Baseline 1 (zero-shot)] O modelo pré-treinado \texttt{pt\_core\_news\_lg}
     do spaCy, aplicado diretamente ao conjunto de teste sem adaptação ao domínio.
     Os rótulos originais (PER, LOC, ORG) foram mapeados para os rótulos do
-    DDsmall (Pessoa, Localização, Organização).
+    DDsmall (Pessoa, Localização, Organização). Neste experimento, foi usado o
+    pipeline pré-treinado completo carregado com \texttt{spacy.load}, sem
+    reentreinamento nem ajuste adicional ao domínio dos relatos.
 
   \item[Proposta 1 (EntityRuler)] Sistema baseado puramente em regras, construído
     com o componente \texttt{EntityRuler} do spaCy. Para cada entidade do léxico,
     cada forma de superfície foi registrada como um padrão, com casamento
-    insensível a maiúsculas. Os padrões foram ordenados do mais longo para o
-    mais curto.
+    insensível a maiúsculas. O componente foi instanciado em um pipeline
+    \texttt{spacy.blank('pt')} com configuração \texttt{phrase\_matcher\_attr = LOWER},
+    e os padrões foram ordenados do mais longo para o mais curto.
 
   \item[Baseline 2 (DDsmall)] Modelo NER treinado exclusivamente com os 4.226
     relatos do conjunto de treino do DDsmall. Representa o desempenho alcançável
-    com a anotação manual disponível, sem dados adicionais.
+    com a anotação manual disponível, sem dados adicionais. Sua implementação
+    usou um pipeline \texttt{spacy.blank('pt')} com o componente treinável
+    \texttt{ner}.
 
   \item[Proposta 2 (20k pseudo)] Modelo NER treinado com os 4.226 relatos do
     DDsmall combinados com os primeiros 20.000 relatos pseudo-anotados do DDlarge.
+    Assim como o Baseline 2, foi treinado do zero em spaCy com
+    \texttt{spacy.blank('pt')} e componente \texttt{ner}, mudando apenas o
+    conjunto de exemplos usados no treinamento.
 
   \item[Proposta 2 (completo)] Variante que utilizou todos os 133.841 relatos
     pseudo-anotados do DDlarge combinados com os 4.226 relatos do DDsmall.
+    A arquitetura e a biblioteca utilizadas foram as mesmas da Proposta 2 (20k),
+    variando somente a quantidade de pseudo-exemplos incluídos.
 \end{description}
 
 \section{Métricas de avaliação}
@@ -299,7 +371,11 @@ A avaliação foi realizada no nível de entidade: uma predição é correta som
 quando o span de início e fim coincide exatamente com a anotação de referência
 e o rótulo de classe também é correto. Foram reportadas precisão, revocação e
 F1 por classe, F1 micro, que soma os totais globais de TP, FP e FN, e F1
-macro, a média simples entre as três classes.
+macro, a média simples entre as três classes. Para os experimentos com modelos
+do spaCy, as predições foram obtidas executando os pipelines carregados com
+\texttt{spacy.load(...)} sobre os relatos do conjunto de teste; no caso do
+Baseline 1, houve ainda o mapeamento dos rótulos nativos do modelo pré-treinado
+para o esquema de classes adotado neste trabalho.
 
 \begin{table}[H]
 \centering
@@ -307,6 +383,7 @@ macro, a média simples entre as três classes.
 Uma predição é correta somente quando span e classe coincidem exatamente.}
 \label{tab:entidade}
 \small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrrrrr}
 \toprule
 & \multicolumn{3}{c}{\textbf{Pessoa}} & \multicolumn{3}{c}{\textbf{Localização}} & \multicolumn{3}{c}{\textbf{Organização}} & \\
@@ -320,6 +397,7 @@ Proposta 2 (completo)   & 0,535 & 0,398 & 0,457 & 0,828 & 0,596 & 0,693 & 0,723 
 Baseline 1 (zero-shot)  & 0,408 & 0,495 & 0,447 & 0,409 & 0,347 & 0,375 & 0,254 & 0,149 & 0,187 & 0,362 \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
 O Baseline 2 obteve o melhor desempenho, com micro-F1 de 0,795. A melhor
