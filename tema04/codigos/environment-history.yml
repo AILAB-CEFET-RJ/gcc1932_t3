@@ -1,0 +1,41 @@
+name: atmoseer
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - python=3.9
+  - ipykernel
+  - bottleneck
+  - dask
+  - netcdf4
+  - xarray
+  - pytorch::pytorch
+  - conda-forge::tqdm
+  - conda-forge::matplotlib
+  - cartopy
+  - anaconda::seaborn
+  - conda-forge::scikit-learn
+  - pandera
+  - conda-forge::opencv
+  - conda-forge::folium
+  - conda-forge::geopandas=0.14.4
+  - conda-forge::fiona
+  - herbie-data
+  - ray-default
+  - conda-forge::pandas
+  - conda-forge::typing-extensions
+  - conda-forge::typeguard
+  - conda-forge::numpy
+  - fastparquet
+  - conda-forge::pydantic-settings
+  - zarr
+  - conda-forge::line_profiler
+  - ipywidgets
+  - catboost
+  - imbalanced-learn
+  - captum
+  - anaconda::flask
+  - conda-forge::flask-compress
+  - pytorch::torchvision
+  - proj
+prefix: /home/felipe/anaconda3/envs/atmoseer
