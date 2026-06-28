@@ -1,0 +1,36 @@
+{
+  "experiment_name": "linear_regression_gate_err_manual_strength0.5",
+  "dataset": "happyT",
+  "model": "LinearRegression",
+  "feature_set": "gate_err_manual",
+  "eval_split": "val",
+  "evaluation_purpose": "model_selection",
+  "target": "redshift",
+  "features": [
+    "u_gate",
+    "g_gate",
+    "r_gate",
+    "i_gate",
+    "z_gate"
+  ],
+  "n_features": 5,
+  "model_params": {
+    "fit_intercept": true,
+    "gate_strength": 0.5,
+    "gate_weight": "exp(-gate_strength * error_norm)",
+    "gate_error_clipping_percentile": 99
+  },
+  "created_at_utc": "18:12",
+  "metrics": {
+    "val_mae": 0.05110866691172732,
+    "val_rmse": 0.074177031725782,
+    "val_r2": 0.8746995825204287,
+    "val_bias": -0.0005116898781732703,
+    "val_n": 14990,
+    "val_negative_redshift_predictions": 480,
+    "val_catastrophic_outlier_fraction": 0.022881921280853902,
+    "val_catastrophic_outlier_threshold": 0.15,
+    "val_nmad": 0.039478029338280374,
+    "val_nmad_se": 0.0003983991493980993
+  }
+}

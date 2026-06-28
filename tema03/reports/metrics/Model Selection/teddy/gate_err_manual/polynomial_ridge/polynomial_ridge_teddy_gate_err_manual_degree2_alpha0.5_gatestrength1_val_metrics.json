@@ -1,0 +1,42 @@
+{
+  "experiment_name": "polynomial_ridge_gate_err_manual_degree2_alpha0.5_gatestrength1",
+  "dataset": "teddyT",
+  "model": "PolynomialFeatures+Ridge",
+  "feature_set": "gate_err_manual",
+  "eval_split": "val",
+  "evaluation_purpose": "model_selection",
+  "target": "redshift",
+  "features": [
+    "u_gate",
+    "g_gate",
+    "r_gate",
+    "i_gate",
+    "z_gate"
+  ],
+  "n_features": 5,
+  "model_params": {
+    "degree": 2,
+    "include_bias": false,
+    "alpha": 0.5,
+    "feature_transform": [
+      "PolynomialFeatures",
+      "StandardScaler"
+    ],
+    "gate_strength": 1.0,
+    "gate_weight": "exp(-gate_strength * error_norm)",
+    "gate_error_clipping_percentile": 99
+  },
+  "created_at_utc": "18:15",
+  "metrics": {
+    "val_mae": 0.028193146290495796,
+    "val_rmse": 0.041898687347257345,
+    "val_r2": 0.77458047314038,
+    "val_bias": 6.40354310495513e-05,
+    "val_n": 14862,
+    "val_negative_redshift_predictions": 0,
+    "val_catastrophic_outlier_fraction": 0.0024222850222042794,
+    "val_catastrophic_outlier_threshold": 0.15,
+    "val_nmad": 0.021561207557917492,
+    "val_nmad_se": 0.00023822488702290845
+  }
+}

@@ -1,0 +1,13 @@
+__pycache__
+.venv
+.venv-label
+checkpoints
+checkpoints_*
+results
+results_*
+.vscode
+windowed
+raw
+*.parquet
+.ipynb_checkpoints
+tflite_models

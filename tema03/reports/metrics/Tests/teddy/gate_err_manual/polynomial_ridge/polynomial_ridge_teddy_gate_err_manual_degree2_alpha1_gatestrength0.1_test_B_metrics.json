@@ -1,0 +1,194 @@
+{
+  "experiment_name": "polynomial_ridge_gate_err_manual_degree2_alpha1_gatestrength0.1",
+  "dataset": "teddyT",
+  "model": "PolynomialFeatures+Ridge",
+  "feature_set": "gate_err_manual",
+  "eval_split": "test",
+  "evaluation_purpose": "final_evaluation",
+  "target": "redshift",
+  "features": [
+    "u_gate",
+    "g_gate",
+    "r_gate",
+    "i_gate",
+    "z_gate"
+  ],
+  "n_features": 5,
+  "model_params": {
+    "degree": 2,
+    "include_bias": false,
+    "alpha": 1.0,
+    "feature_transform": [
+      "PolynomialFeatures",
+      "StandardScaler"
+    ],
+    "gate_strength": 0.1,
+    "gate_weight": "exp(-gate_strength * error_norm)",
+    "gate_error_clipping_percentile": 99
+  },
+  "created_at_utc": "18:54",
+  "test_set": "B",
+  "metrics": {
+    "test_mae": 0.02400759634715691,
+    "test_rmse": 0.035113345842180774,
+    "test_r2": 0.8400215317417363,
+    "test_bias": -6.521423542860547e-05,
+    "test_n": 74559,
+    "test_negative_redshift_predictions": 0,
+    "test_catastrophic_outlier_fraction": 0.0014082806904599041,
+    "test_catastrophic_outlier_threshold": 0.15,
+    "test_nmad": 0.018809677583548356,
+    "test_nmad_se": 8.302862385571796e-05
+  },
+  "slice_metrics": {
+    "by_redshift": [
+      {
+        "slice": "redshift",
+        "bin": "z 0..0.1",
+        "bin_order": 0,
+        "test_n": 23,
+        "test_mae": 0.2158600464807902,
+        "test_rmse": 0.23689442409909878,
+        "test_bias": 0.2158600464807902,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.08880717994765062
+      },
+      {
+        "slice": "redshift",
+        "bin": "z 0.1..0.2",
+        "bin_order": 1,
+        "test_n": 6306,
+        "test_mae": 0.017516733232564245,
+        "test_rmse": 0.029331131433799323,
+        "test_bias": 0.00851935287095738,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.014080942309123056
+      },
+      {
+        "slice": "redshift",
+        "bin": "z 0.2..0.4",
+        "bin_order": 2,
+        "test_n": 53153,
+        "test_mae": 0.021545281651563112,
+        "test_rmse": 0.031268028717644815,
+        "test_bias": 0.005403308909493304,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.01740996969674345
+      },
+      {
+        "slice": "redshift",
+        "bin": "z 0.4..0.6",
+        "bin_order": 3,
+        "test_n": 15002,
+        "test_mae": 0.034415160860167646,
+        "test_rmse": 0.04514806696354591,
+        "test_bias": -0.022509514101762423,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.022870249379558453
+      },
+      {
+        "slice": "redshift",
+        "bin": "z 0.6..inf",
+        "bin_order": 4,
+        "test_n": 75,
+        "test_mae": 0.17419301819059438,
+        "test_rmse": 0.18850226798627284,
+        "test_bias": -0.17419301819059438,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.025474171806356073
+      }
+    ],
+    "by_r_magnitude": [
+      {
+        "slice": "r_magnitude",
+        "bin": "(12.017000000000001, 17.942]",
+        "bin_order": 0,
+        "test_n": 18640,
+        "test_mae": 0.014619644030103534,
+        "test_rmse": 0.021264595094158525,
+        "test_bias": -0.00020216070081912612,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.01319096108323857
+      },
+      {
+        "slice": "r_magnitude",
+        "bin": "(17.942, 18.619]",
+        "bin_order": 1,
+        "test_n": 18640,
+        "test_mae": 0.021109516245794855,
+        "test_rmse": 0.028748514721490148,
+        "test_bias": 0.003094546506632932,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.01766371793726388
+      },
+      {
+        "slice": "r_magnitude",
+        "bin": "(18.619, 19.174]",
+        "bin_order": 2,
+        "test_n": 18639,
+        "test_mae": 0.025152194876160577,
+        "test_rmse": 0.03376772154906019,
+        "test_bias": -0.002825174010933096,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.021428607801549454
+      },
+      {
+        "slice": "r_magnitude",
+        "bin": "(19.174, 20.985]",
+        "bin_order": 3,
+        "test_n": 18640,
+        "test_mae": 0.03514909164206916,
+        "test_rmse": 0.050128476244257196,
+        "test_bias": -0.00032821680310669295,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.02562196031246214
+      }
+    ],
+    "by_photometric_error": [
+      {
+        "slice": "mean_photometric_error",
+        "bin": "(0.0457, 0.0941]",
+        "bin_order": 0,
+        "test_n": 18640,
+        "test_mae": 0.015720145070966682,
+        "test_rmse": 0.022787097955012818,
+        "test_bias": 0.002812146239051089,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.013865524905264479
+      },
+      {
+        "slice": "mean_photometric_error",
+        "bin": "(0.0941, 0.127]",
+        "bin_order": 1,
+        "test_n": 18640,
+        "test_mae": 0.021359202186645703,
+        "test_rmse": 0.03022952414997854,
+        "test_bias": 0.0020533444701942684,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.017477880342932815
+      },
+      {
+        "slice": "mean_photometric_error",
+        "bin": "(0.127, 0.17]",
+        "bin_order": 2,
+        "test_n": 18639,
+        "test_mae": 0.025517136464801006,
+        "test_rmse": 0.03555664504771856,
+        "test_bias": -0.002355582919923594,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.02085771209118359
+      },
+      {
+        "slice": "mean_photometric_error",
+        "bin": "(0.17, 0.349]",
+        "bin_order": 3,
+        "test_n": 18640,
+        "test_mae": 0.033433982650126134,
+        "test_rmse": 0.047269852284722635,
+        "test_bias": -0.00277088760489265,
+        "test_negative_redshift_predictions": 0,
+        "test_nmad": 0.025039762347804657
+      }
+    ]
+  }
+}

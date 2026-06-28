@@ -1,0 +1,42 @@
+{
+  "experiment_name": "polynomial_ridge_gate_err_manual_degree2_alpha0.1_gatestrength5",
+  "dataset": "happyT",
+  "model": "PolynomialFeatures+Ridge",
+  "feature_set": "gate_err_manual",
+  "eval_split": "val",
+  "evaluation_purpose": "model_selection",
+  "target": "redshift",
+  "features": [
+    "u_gate",
+    "g_gate",
+    "r_gate",
+    "i_gate",
+    "z_gate"
+  ],
+  "n_features": 5,
+  "model_params": {
+    "degree": 2,
+    "include_bias": false,
+    "alpha": 0.1,
+    "feature_transform": [
+      "PolynomialFeatures",
+      "StandardScaler"
+    ],
+    "gate_strength": 5.0,
+    "gate_weight": "exp(-gate_strength * error_norm)",
+    "gate_error_clipping_percentile": 99
+  },
+  "created_at_utc": "18:13",
+  "metrics": {
+    "val_mae": 0.06789120682109699,
+    "val_rmse": 0.09489848120808202,
+    "val_r2": 0.7949158294552385,
+    "val_bias": -0.00029387356291335,
+    "val_n": 14990,
+    "val_negative_redshift_predictions": 122,
+    "val_catastrophic_outlier_fraction": 0.03188792528352235,
+    "val_catastrophic_outlier_threshold": 0.15,
+    "val_nmad": 0.05406939476160331,
+    "val_nmad_se": 0.0005768624943305727
+  }
+}

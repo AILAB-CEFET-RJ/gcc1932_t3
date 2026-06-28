@@ -1,0 +1,39 @@
+{
+  "experiment_name": "polynomial_ridge_mag_degree2_alpha5",
+  "dataset": "teddyT",
+  "model": "PolynomialFeatures+Ridge",
+  "feature_set": "mag",
+  "eval_split": "val",
+  "evaluation_purpose": "model_selection",
+  "target": "redshift",
+  "features": [
+    "u",
+    "g",
+    "r",
+    "i",
+    "z"
+  ],
+  "n_features": 5,
+  "model_params": {
+    "degree": 2,
+    "include_bias": false,
+    "alpha": 5,
+    "feature_transform": [
+      "PolynomialFeatures",
+      "StandardScaler"
+    ]
+  },
+  "created_at_utc": "16:41",
+  "metrics": {
+    "val_mae": 0.02452414945235408,
+    "val_rmse": 0.03654853753012556,
+    "val_r2": 0.8284737049870883,
+    "val_bias": -0.0005407005168812689,
+    "val_n": 14862,
+    "val_negative_redshift_predictions": 0,
+    "val_catastrophic_outlier_fraction": 0.0019512851567756696,
+    "val_catastrophic_outlier_threshold": 0.15,
+    "val_nmad": 0.019183032520408316,
+    "val_nmad_se": 0.00019606069818841164
+  }
+}
