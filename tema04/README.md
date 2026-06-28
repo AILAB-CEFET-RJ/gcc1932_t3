@@ -174,7 +174,71 @@ tensor XLV e produz uma representação compatível com a STConvS2S:
 
 ![alt text](images/imagebloco.png)
 ### **Código**
-O código dessa etapa tem duas partes, a primeira é 
+> Para rodar o baseline (Passo recomendados pelo Felipe Nieto)
+
+Precisa do repositório STConvs2s e que esse repositório esteja na branch main e rodar o comando na pasta STConvS2S.
+
+Também precisa estar com o ambiente(codigos/environment-history.yml) ativo 
+
+```bash
+cd STConvS2S ## Entrar na pasta correta
+
+git checkout main ## Mudar de brach 
+
+conda activate atmoseer ## Ativar ambiente
+
+
+## Comando para rodar o projeto 
+python main.py --cuda 1 -i 1 -v 4 -m stconvs2s-r -e 10 -p 100 --plot --dropout 0.5 -dsp "{pasta_arquivo}\ERA5+SIA.nc" -r "RunModels_ERA5+SIA" -w 0
+```
+
+> Para rodar o Level-aware XLV sem bloco (Passo recomendados pelo Felipe Nieto)
+
+Precisa do repositório STConvs2s e que esse repositório esteja na branch main e rodar o comando na pasta STConvS2S.
+
+Também precisa estar com o ambiente(codigos/environment-history.yml) ativo 
+```bash
+cd STConvS2S ## Entrar na pasta correta
+
+git checkout feat/4D-architecture ## Mudar de brach 
+
+conda activate atmoseer ## Ativar ambiente
+
+## Comando para rodar o projeto 
+python main.py --cuda 1 -i 1 -v 4 -m stconvs2s-r -e 10 -p 100 --plot --dropout 0.5 -dsp "{pasta_arquivo}\ERA5+SIA_XLV_3D.nc" --target-channels 0 --target-levels 0 -r "production_run" -w 0
+```
+
+
+> Para rodar o Level-aware XLV Bloco 3x1x1
+
+Precisa do repositório STConvs2s e que esse repositório esteja na branch main e rodar o comando na pasta STConvS2S.
+
+Também precisa estar com o ambiente(codigos/environment-history.yml) ativo. 
+
+Precisa colocar o código - (codigos/train_lv_block.py) dentro da pasta do STConvS2S
+
+Precisa coloca o código - (codigos/vertical_block.py) dentro da pasta do STConvS2S/model
+```bash
+## Com os arquivos dentro da pasta só rodar o proejto
+## Comando para rodar o projeto 
+python train_lv_block.py -dsp "ERA5+SIA_XLV_3D.nc" -e 10 -p 100 -r "LV_block_311" --kernel-lv 3 1 1  --compression mean -w 0 
+```
+
+> Para rodar o Level-aware XLV Bloco 3x3x3
+
+Precisa do repositório STConvs2s e que esse repositório esteja na branch main e rodar o comando na pasta STConvS2S.
+
+Também precisa estar com o ambiente(codigos/environment-history.yml) ativo. 
+
+Precisa colocar o código - (codigos/train_lv_block.py) dentro da pasta do STConvS2S
+
+Precisa coloca o código - (codigos/vertical_block.py) dentro da pasta do STConvS2S/model
+```bash
+## Com os arquivos dentro da pasta só rodar o proejto
+## Comando para rodar o projeto 
+python train_lv_block.py -dsp "ERA5+SIA_XLV_3D.nc" -e 10 -p 100 -r "LV_block_333" --kernel-lv 3 3 3  --compression mean -w 0 
+```
+
 
 ### **Resultados**
 >Análise dos Resultados Oficiais (1 época)
@@ -223,14 +287,30 @@ O código dessa etapa tem duas partes, a primeira é
 
 
 **Matriz confusão**
+
 ![alt text](images/matrizConfusao10.png)
 
 
 **RMSE por Horizonte de previsão**
+
 ![alt text](images/RMSEHorizonte10.png)
 
 **F1-Score classe moderada**
+
 ![alt text](images/F1-Score10.png)
+
+---
+
+## Avaliação final 
+
+Acreditamos que o dataset novo está bem interessante e pode ser usado no projeto de maneira efetiva, rodando o dataset novo sem o bloco que criamos mostrou resultados interessantes mas que demoram muito para executar. Os blocos que criar acreditamos que precisa melhorar o código e de mais testes para melhorar os resultados, não atingiram um nível ideal 
+
+Resposta da pergunta orientadora:
+A representação level-aware melhora o RMSE global quando 
+combinada com o pipeline original (−6,3%). A adição do VerticalSpatialBlock introduz sensibilidade 
+a eventos raros que não surge nos outros modelos, ao custo de RMSE maior em estágio inicial de 
+treinamento. O Bloco 3×1×1 apresenta o melhor equilíbrio: melhor MAE de todos os modelos, F1 Moderada competitivo e treino 4× mais rápido que o LV sem bloco. 
+
 
 ## Documentos extras: 
 - Documentação ERA5: https://confluence.ecmwf.int/spaces/CKB/pages/76414402/ERA5+data+documentation
